@@ -9,8 +9,8 @@ class BaseGAttN:
 
     def training(loss, lr, l2_coef):
         # weight decay
-        vars = tf.trainable_variables()
-        lossL2 = tf.add_n([tf.nn.l2_loss(v) for v in vars if v.name not
+        variables = tf.trainable_variables()
+        lossL2 = tf.add_n([tf.nn.l2_loss(v) for v in variables if v.name not
                            in ['bias', 'gamma', 'b', 'g', 'beta']]) * l2_coef
 
         # optimizer
@@ -45,7 +45,7 @@ class BaseGAttN:
         return tf.reduce_mean(loss)
 
     def masked_sigmoid_cross_entropy(logits, labels, mask):
-        """Softmax cross-entropy loss with masking."""
+        """Sigmoid cross-entropy loss with masking."""
         labels = tf.cast(labels, dtype=tf.float32)
         loss = tf.nn.sigmoid_cross_entropy_with_logits(logits=logits, labels=labels)
         loss=tf.reduce_mean(loss,axis=1)
@@ -64,7 +64,7 @@ class BaseGAttN:
         return tf.reduce_mean(accuracy_all)
 
     def micro_f1(logits, labels, mask):
-        """Accuracy with masking."""
+        """f1-loss with masking."""
         predicted = tf.round(tf.nn.sigmoid(logits))
 
         # Use integers to avoid any nasty FP behaviour

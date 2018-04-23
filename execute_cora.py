@@ -64,10 +64,9 @@ with tf.Graph().as_default():
         is_train = tf.placeholder(dtype=tf.bool, shape=())
 
     logits = model.inference(ftr_in, nb_classes, nb_nodes, is_train,
-                                attn_drop, ffd_drop,
-                                bias_mat=bias_in,
-                                hid_units=hid_units, n_heads=n_heads,
-                                residual=residual, activation=nonlinearity)
+                                attn_drop, ffd_drop, bias_in,
+                                hid_units, n_heads,
+                                activation=nonlinearity, residual=residual)
     log_resh = tf.reshape(logits, [-1, nb_classes])
     lab_resh = tf.reshape(lbl_in, [-1, nb_classes])
     msk_resh = tf.reshape(msk_in, [-1])
